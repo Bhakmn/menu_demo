@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Restaurant Menu</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff8f0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #c94f4f;
+      margin-bottom: 30px;
+    }
+    #langToggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #c94f4f;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .category-card {
+      position: relative;
+      width: 200px;
+      height: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(201,79,79,0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s ease;
+    }
+    .category-card:hover {
+      transform: scale(1.05);
+    }
+    .category-name {
+      background-color: rgba(201,79,79,0.85);
+      color: white;
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    #backBtn {
+      margin-bottom: 20px;
+      background-color: #c94f4f;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: none;
+    }
+    #foodList {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .food-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 15px;
+    }
+    .food-photo {
+      width: 140px;
+      height: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(201,79,79,0.3);
+    }
+    .food-info {
+      flex-grow: 1;
+    }
+    .food-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #c94f4f;
+    }
+    .food-description {
+      font-size: 1rem;
+      margin: 6px 0;
+      color: #555;
+    }
+    .food-price {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #7a2f2f;
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="pageTitle">Restaurant Menu</h1>
+<button id="langToggle">TR</button>
+<button id="backBtn">← Back to Categories</button>
+
+<div id="categories"></div>
+<div id="foodList" style="display:none;"></div>
+
+<script>
+  const categoriesDiv = document.getElementById('categories');
+  const foodListDiv = document.getElementById('foodList');
+  const backBtn = document.getElementById('backBtn');
+  const langToggle = document.getElementById('langToggle');
+  const pageTitle = document.getElementById('pageTitle');
+
+  let menuData = {};
+  let currentLang = 'en';
+
+  async function loadDataFromJSON() {
+    const response = await fetch('public/data/menu-data.json');
+    menuData = await response.json();
+    showCategories();
+  }
+
+  function showCategories() {
+    foodListDiv.style.display = 'none';
+    backBtn.style.display = 'none';
+    categoriesDiv.style.display = 'flex';
+    categoriesDiv.innerHTML = '';
+
+    Object.entries(menuData).forEach(([key, catData]) => {
+      const card = document.createElement('div');
+      card.className = 'category-card';
+      card.style.backgroundImage = `url(${catData.bgImage})`;
+      card.title = catData.title?.[currentLang] || key;
+
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'category-name';
+      nameDiv.textContent = catData.title?.[currentLang] || key;
+
+      card.appendChild(nameDiv);
+      card.onclick = () => showFoods(key);
+
+      categoriesDiv.appendChild(card);
+    });
+
+    updateTexts();
+  }
+
+  function showFoods(categoryKey) {
+    categoriesDiv.style.display = 'none';
+    backBtn.style.display = 'inline-block';
+    foodListDiv.style.display = 'block';
+    foodListDiv.innerHTML = '';
+
+    const foods = menuData[categoryKey]?.foods || [];
+    if (foods.length === 0) {
+      foodListDiv.innerHTML = `<p>${currentLang === 'tr' ? 'Bu kategoride henüz ürün yok.' : 'No food items in this category yet.'}</p>`;
+      return;
+    }
+
+    foods.forEach(food => {
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'food-item';
+
+      if (food.photo) {
+        const img = document.createElement('img');
+        img.className = 'food-photo';
+        img.src = food.photo;
+        img.alt = food.name?.[currentLang] || '';
+        itemDiv.appendChild(img);
+      }
+
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'food-info';
+
+      const name = document.createElement('div');
+      name.className = 'food-name';
+      name.textContent = food.name?.[currentLang] || '';
+
+      const desc = document.createElement('div');
+      desc.className = 'food-description';
+      desc.textContent = food.description?.[currentLang] || '';
+
+      const price = document.createElement('div');
+      price.className = 'food-price';
+      price.textContent = `$${food.price.toFixed(2)}`;
+
+      infoDiv.appendChild(name);
+      infoDiv.appendChild(desc);
+      infoDiv.appendChild(price);
+
+      itemDiv.appendChild(infoDiv);
+      foodListDiv.appendChild(itemDiv);
+    });
+
+    updateTexts();
+  }
+
+  function updateTexts() {
+    pageTitle.textContent = currentLang === 'tr' ? 'Restoran Menüsü' : 'Restaurant Menu';
+    backBtn.textContent = currentLang === 'tr' ? '← Kategorilere Geri Dön' : '← Back to Categories';
+    langToggle.textContent = currentLang === 'tr' ? 'EN' : 'TR';
+  }
+
+  langToggle.addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'tr' : 'en';
+    showCategories();
+  });
+
+  backBtn.addEventListener('click', () => {
+    showCategories();
+  });
+
+  loadDataFromJSON();
+</script>
+
+</body>
+</html>

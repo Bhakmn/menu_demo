@@ -1,0 +1,81 @@
+{
+  "Appetizers": {
+    "bgImage": "public/images/categories/Appetizers.jpg",
+    "foods": [
+      {
+        "description": {
+          "en": "Grilled bread with tomatoes and basil.",
+          "tr": "Domates ve fesleğenle ızgara ekmek."
+        },
+        "name": {
+          "en": "Bruschetta",
+          "tr": "Bruschetta"
+        },
+        "photo": "public/images/foods/Bruschetta.jpg",
+        "price": 6.99
+      }
+    ],
+    "title": {
+      "en": "Appetizers",
+      "tr": "Başlangıçlar"
+    }
+  },
+  "Desserts": {
+    "bgImage": "public/images/categories/Desserts.jpg",
+    "foods": [
+      {
+        "description": {
+          "en": "Classic Italian dessert with coffee and mascarpone.",
+          "tr": "Kahve ve mascarpone ile yapılan klasik İtalyan tatlısı."
+        },
+        "name": {
+          "en": "Tiramisu",
+          "tr": "Tiramisu"
+        },
+        "photo": "public/images/foods/Tiramisu.jpg",
+        "price": 5.49
+      }
+    ],
+    "title": {
+      "en": "Desserts",
+      "tr": "Tatlılar"
+    }
+  },
+  "Drinks": {
+    "bgImage": "public/images/categories/Drinks.jpg",
+    "foods": [
+      {
+        "description": {
+          "en": "an alcoholic beverage produced by the brewing and fermentation of starches from cereal grain—most commonly malted barley, although wheat, maize (corn), rice, and oats are also used.",
+          "tr": "Tahıldan üretilir. Yaygın olarak malt arpa kullanılır ama buğday, mısır ve pirinç de kullanılan ürünler arasındadır."
+        },
+        "name": {
+          "en": "Beer",
+          "tr": "Bira"
+        },
+        "photo": "public/images/foods/Beer.jpg",
+        "price": 2
+      }
+    ],
+    "title": {
+      "en": "Drinks",
+      "tr": "İçecekler"
+    }
+  },
+  "Salads": {
+    "bgImage": "images/categories/Salads.jpg",
+    "foods": [],
+    "title": {
+      "en": "Salads",
+      "tr": "Salatalar"
+    }
+  },
+  "Alcholol": {
+    "title": {
+      "en": "Alcholol",
+      "tr": "Alkol"
+    },
+    "bgImage": "images/categories/Alcholol.jpg",
+    "foods": []
+  }
+}
