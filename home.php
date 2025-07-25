@@ -9,7 +9,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel - Restaurant Menu</title>
+  <title>Admin Panel - Restaurant Menu (eray edit)</title>
   <style>
     body {
       font-family: sans-serif;
